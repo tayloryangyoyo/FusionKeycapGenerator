@@ -143,6 +143,8 @@ def run(context):
         # 繪製一個圓形草圖
         sketch2 = createSketch(squareComp, squareComp.xYConstructionPlane)
         drawCircleSketch(sketch2, 5.5/2)
+        drawRectangleSketch(sketch2, 4.05, 1.25)
+        drawRectangleSketch(sketch2, 1.25, 4.05)
 
         # 取得拉伸功能
         extrudes = squareComp.features.extrudeFeatures
@@ -161,18 +163,6 @@ def run(context):
         extInput2.setDistanceExtent(False, circleHeight)
         ext = extrudes.add(extInput2)
         
-        # 建立十字部分草圖
-        crossSketch = createSketch(squareComp, squareComp.xYConstructionPlane)
-        drawRectangleSketch(crossSketch, 4.05, 1.25)
-        drawRectangleSketch(crossSketch, 1.25, 4.05)
-        
-        crossProfiles = crossSketch.profiles
-        for i in range(crossProfiles.count):
-            crossExtInput = extrudes.createInput(crossProfiles.item(i), adsk.fusion.FeatureOperations.CutFeatureOperation)
-            crossExtInput.setDistanceExtent(False, circleHeight)
-            crossExtInput.isSolid = True
-            crossExt = extrudes.add(crossExtInput)
-
         # 顯示參數的表達式
         ui.messageBox("DONE")
 
