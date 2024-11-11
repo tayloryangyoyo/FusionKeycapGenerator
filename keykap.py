@@ -1,5 +1,5 @@
-#Author-
-#Description-
+# Author-
+# Description-
 
 import adsk.core, adsk.fusion, adsk.cam, traceback
 
@@ -10,6 +10,7 @@ if app:
     ui = app.userInterface
 
 newComp = None
+
 
 # 定義一個函數來建立新的元件
 def createNewComponent() -> adsk.fusion.Component:
@@ -23,8 +24,11 @@ def createNewComponent() -> adsk.fusion.Component:
     # 回傳新的元件
     return newOcc.component
 
+
 # 建立草圖的函數
-def createSketch(comp: adsk.fusion.Component, plane: adsk.fusion.ConstructionPlane) -> adsk.fusion.Sketch:
+def createSketch(
+    comp: adsk.fusion.Component, plane: adsk.fusion.ConstructionPlane
+) -> adsk.fusion.Sketch:
     # 取得元件的所有草圖
     sketches = comp.sketches
     # 在指定的平面建立草圖
@@ -32,58 +36,50 @@ def createSketch(comp: adsk.fusion.Component, plane: adsk.fusion.ConstructionPla
     # 回傳建立的草圖
     return sketch
 
+
 # 傳入草圖然後繪製矩形草圖的函數
 def drawRectangleSketch(sketch: adsk.fusion.Sketch, width: float, height: float):
-    '''在被傳入的草圖上繪製一個矩形'''
+    """在被傳入的草圖上繪製一個矩形"""
     # 取得草圖的線
     lines = sketch.sketchCurves.sketchLines
     # 繪製一個中心點矩形
-    lines.addCenterPointRectangle(adsk.core.Point3D.create(0, 0, 0), adsk.core.Point3D.create(width / 2, height / 2, 0))
-    return 
+    lines.addCenterPointRectangle(
+        adsk.core.Point3D.create(0, 0, 0),
+        adsk.core.Point3D.create(width / 2, height / 2, 0),
+    )
+    return
+
 
 # 傳入草圖然後繪製圓形草圖的函數
 def drawCircleSketch(sketch: adsk.fusion.Sketch, radius: float):
-    '''在被傳入的草圖上繪製一個圓形'''
+    """在被傳入的草圖上繪製一個圓形"""
     circles = sketch.sketchCurves.sketchCircles
     circles.addByCenterRadius(adsk.core.Point3D.create(0, 0, 0), radius)
     return
 
+
 # 傳入草圖然後繪製文字草圖的函數
-def drawTextSketch(sketch: adsk.fusion.Sketch, text: str, text2: str, text3: str, text4: str,):
-    '''在被傳入的草圖上繪製文字'''
+def drawTextSketch(
+    sketch: adsk.fusion.Sketch,
+    text: str,
+    corner1: adsk.core.Base,
+    corner2: adsk.core.Base,
+):
+    """在被傳入的草圖上繪製文字"""
     # 在指定的平面建立草圖
     texts = sketch.sketchTexts
-    
     # 左上角的文字
     input = texts.createInput2(text, 0.3)
-    input.setAsMultiLine(adsk.core.Point3D.create(0, 0, 0),
-                        adsk.core.Point3D.create(-0.7, 0.7, 0),
-                        adsk.core.HorizontalAlignments.LeftHorizontalAlignment,
-                        adsk.core.VerticalAlignments.TopVerticalAlignment, 0)
-    # 右上角的文字
-    input2 = texts.createInput2(text2, 0.3)
-    input2.setAsMultiLine(adsk.core.Point3D.create(0, 0, 0),
-                        adsk.core.Point3D.create(0.7, 0.7, 0),
-                        adsk.core.HorizontalAlignments.RightHorizontalAlignment,
-                        adsk.core.VerticalAlignments.TopVerticalAlignment, 0)
-    # 左下角的文字
-    input3 = texts.createInput2(text3, 0.3)
-    input3.setAsMultiLine(adsk.core.Point3D.create(0, 0, 0),
-                        adsk.core.Point3D.create(-0.7, -0.7, 0),
-                        adsk.core.HorizontalAlignments.LeftHorizontalAlignment,
-                        adsk.core.VerticalAlignments.BottomVerticalAlignment, 0)
-    # 右下角的文字
-    input4 = texts.createInput2(text4, 0.3)
-    input4.setAsMultiLine(adsk.core.Point3D.create(0, 0, 0),
-                        adsk.core.Point3D.create(0.7, -0.7, 0),
-                        adsk.core.HorizontalAlignments.RightHorizontalAlignment,
-                        adsk.core.VerticalAlignments.BottomVerticalAlignment, 0)
-    
-    texts.add(input)
-    texts.add(input2)
-    texts.add(input3)
-    texts.add(input4)
-    return
+    input.setAsMultiLine(
+        corner1,
+        corner2,
+        adsk.core.HorizontalAlignments.LeftHorizontalAlignment,
+        adsk.core.VerticalAlignments.TopVerticalAlignment,
+        0,
+    )
+
+    return texts.add(input)
+
 
 def run(context):
     try:
@@ -93,7 +89,7 @@ def run(context):
         extrudes: adsk.fusion.ExtrudeFeatures = component.features.extrudeFeatures
         # 取得圓角功能
         filletFeats = component.features.filletFeatures
-        
+
         # ----------建立矩形並且拉伸----------
         # 建立一個新的草圖
         rectSketch = createSketch(component, component.xYConstructionPlane)
@@ -101,9 +97,12 @@ def run(context):
         drawRectangleSketch(rectSketch, 1.7, 1.7)
         # 拉伸矩形2mm
         recProfiles = rectSketch.profiles
-        extInput = extrudes.createInput(recProfiles.item(0), adsk.fusion.FeatureOperations.NewBodyFeatureOperation)
+        extInput = extrudes.createInput(
+            recProfiles.item(0), adsk.fusion.FeatureOperations.NewBodyFeatureOperation
+        )
         recHeight = adsk.core.ValueInput.createByReal(0.2)
         extInput.setDistanceExtent(False, recHeight)
+        extInput.isSolid = True
         ext = extrudes.add(extInput)
 
         # 為四方形的頂部邊緣添加圓角
@@ -115,7 +114,7 @@ def run(context):
         # 將頂部面的四條邊加入圓角集合
         for edge in topFace.edges:
             edges.add(edge)
-        
+
         # 遍歷立方體的所有邊，篩選出垂直邊
         for edge in ext.bodies.item(0).edges:
             # 垂直邊的方向與Z軸平行
@@ -130,35 +129,49 @@ def run(context):
             filletInput = filletFeats.createInput()
             filletInput.addConstantRadiusEdgeSet(edges, filletRadius, True)
             filletFeats.add(filletInput)
-        
+
         # ----------建立圓形和十字凹槽並且拉伸----------
         # 繪製圓形以及中間十字的草圖
         circleSketch = createSketch(component, component.xYConstructionPlane)
-        drawCircleSketch(circleSketch, 0.55/2)
+        drawCircleSketch(circleSketch, 0.55 / 2)
         drawRectangleSketch(circleSketch, 0.405, 0.125)
         drawRectangleSketch(circleSketch, 0.125, 0.405)
-        
+
         # 拉伸圓形外圍3mm
-        circle_profiles= circleSketch.profiles
-        extInput2 = extrudes.createInput(circle_profiles.item(0), adsk.fusion.FeatureOperations.JoinFeatureOperation)
+        circle_profiles = circleSketch.profiles
+        extInput2 = extrudes.createInput(
+            circle_profiles.item(0), adsk.fusion.FeatureOperations.JoinFeatureOperation
+        )
         circleHeight = adsk.core.ValueInput.createByReal(-0.3)
         extInput2.setDistanceExtent(False, circleHeight)
+        extInput2.isSolid = True
         ext = extrudes.add(extInput2)
-        
+
         # ----------建立文字並且切割----------
         textSketch = createSketch(component, component.xYConstructionPlane)
-        drawTextSketch(textSketch, "Q", "F1", "BT01", "Esc")
-        
+        sketchText = drawTextSketch(
+            textSketch,
+            "Q",
+            adsk.core.Point3D.create(0, 0, 0),
+            adsk.core.Point3D.create(-0.7, 0.7, 0),
+        )
+
         # 拉伸文字
-        text_profiles = textSketch.profiles
-        extInput3 = extrudes.createInput(text_profiles.item(0), adsk.fusion.FeatureOperations.CutFeatureOperation)
-        textHeight = adsk.core.ValueInput.createByReal(0.2)
-        extInput3.setDistanceExtent(False, textHeight)
+        extInput3 = extrudes.createInput(sketchText, adsk.fusion.FeatureOperations.CutFeatureOperation)
+        
+        # 設置從 3mm 的 Z 軸偏移開始向下拉伸
+        offset_start = adsk.fusion.OffsetStartDefinition.create(adsk.core.ValueInput.createByReal(0.2))
+        extInput3.startExtent = offset_start
+
+        # 設置拉伸距離 -0.2mm（向下）
+        extInput3.setDistanceExtent(False, adsk.core.ValueInput.createByReal(-0.02))
+        extInput3.isSolid = True
         ext = extrudes.add(extInput3)
+
 
         # 顯示參數的表達式
         ui.messageBox("DONE Git")
 
     except:
         if ui:
-            ui.messageBox('Failed:\n{}'.format(traceback.format_exc()))
+            ui.messageBox("Failed:\n{}".format(traceback.format_exc()))
