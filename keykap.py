@@ -69,7 +69,7 @@ def drawTextSketch(
     # 在指定的平面建立草圖
     texts = sketch.sketchTexts
     # 左上角的文字
-    input = texts.createInput2(text, 0.3)
+    input = texts.createInput2(text, 0.4)
     input.setAsMultiLine(
         corner1,
         corner2,
@@ -148,27 +148,102 @@ def run(context):
         ext = extrudes.add(extInput2)
 
         # ----------建立文字並且切割----------
+        # CenterHorizontalAlignment	1	Aligned along the center.
+        # LeftHorizontalAlignment	0	Aligned to the left.
+        # RightHorizontalAlignment	2	Aligned to the right.
+        
+        # BottomVerticalAlignment	2	Aligned to the bottom.
+        # MiddleVerticalAlignment	1	Aligned along the middle.
+        # TopVerticalAlignment		0	Aligned to the top.
+        keyCapTextArray = ["Q", "F1", "BT01", "[Esc"]
+        # --左上角--
         textSketch = createSketch(component, component.xYConstructionPlane)
         sketchText = drawTextSketch(
             textSketch,
-            "Q",
+            keyCapTextArray[0],
             adsk.core.Point3D.create(0, 0, 0),
             adsk.core.Point3D.create(-0.7, 0.7, 0),
         )
 
         # 拉伸文字
-        extInput3 = extrudes.createInput(sketchText, adsk.fusion.FeatureOperations.CutFeatureOperation)
-        
+        extTextInput = extrudes.createInput(sketchText, adsk.fusion.FeatureOperations.CutFeatureOperation)
         # 設置從 3mm 的 Z 軸偏移開始向下拉伸
-        offset_start = adsk.fusion.OffsetStartDefinition.create(adsk.core.ValueInput.createByReal(0.2))
-        extInput3.startExtent = offset_start
-
+        extTextInput.startExtent = adsk.fusion.OffsetStartDefinition.create(adsk.core.ValueInput.createByReal(0.2))
         # 設置拉伸距離 -0.2mm（向下）
-        extInput3.setDistanceExtent(False, adsk.core.ValueInput.createByReal(-0.02))
-        extInput3.isSolid = True
-        ext = extrudes.add(extInput3)
+        extTextInput.setDistanceExtent(False, adsk.core.ValueInput.createByReal(-0.02))
+        extTextInput.isSolid = True
+        ext = extrudes.add(extTextInput)
+        
+        # --右上角--
+        textSketch2 = createSketch(component, component.xYConstructionPlane)
+        # 在指定的平面建立草圖
+        sketchText2 = textSketch2.sketchTexts
+        # 左上角的文字
+        textInput2 = sketchText2.createInput2(keyCapTextArray[1], 0.3)
+        textInput2.setAsMultiLine(
+            adsk.core.Point3D.create(0, 0, 0),
+            adsk.core.Point3D.create(0.7, 0.7, 0),
+            adsk.core.HorizontalAlignments.RightHorizontalAlignment,
+            adsk.core.VerticalAlignments.TopVerticalAlignment,
+            0,
+        )
+        extText2 = sketchText2.add(textInput2)
+        # 拉伸文字
+        extTextInput2 = extrudes.createInput(extText2, adsk.fusion.FeatureOperations.CutFeatureOperation)
+        # 設置從 3mm 的 Z 軸偏移開始向下拉伸
+        extTextInput2.startExtent = adsk.fusion.OffsetStartDefinition.create(adsk.core.ValueInput.createByReal(0.2))
+        # 設置拉伸距離 -0.2mm（向下）
+        extTextInput2.setDistanceExtent(False, adsk.core.ValueInput.createByReal(-0.02))
+        extTextInput2.isSolid = True
+        ext = extrudes.add(extTextInput2)
+        
+        # --左下角--
+        textSketch3 = createSketch(component, component.xYConstructionPlane)
+        # 在指定的平面建立草圖
+        sketchText3 = textSketch3.sketchTexts
+        # 左上角的文字
+        textInput3 = sketchText3.createInput2(keyCapTextArray[2], 0.2)
+        textInput3.setAsMultiLine(
+            adsk.core.Point3D.create(0, 0, 0),
+            adsk.core.Point3D.create(-0.7, -0.7, 0),
+            adsk.core.HorizontalAlignments.LeftHorizontalAlignment,
+            adsk.core.VerticalAlignments.BottomVerticalAlignment,
+            0,
+        )
+        extText3 = sketchText3.add(textInput3)
+        # 拉伸文字
+        extTextInput3 = extrudes.createInput(extText3, adsk.fusion.FeatureOperations.CutFeatureOperation)
+        # 設置從 3mm 的 Z 軸偏移開始向下拉伸
+        extTextInput3.startExtent = adsk.fusion.OffsetStartDefinition.create(adsk.core.ValueInput.createByReal(0.2))
+        # 設置拉伸距離 -0.2mm（向下）
+        extTextInput3.setDistanceExtent(False, adsk.core.ValueInput.createByReal(-0.02))
+        extTextInput3.isSolid = True
+        ext = extrudes.add(extTextInput3)
 
-
+        # --右下角--
+        textSketch4 = createSketch(component, component.xYConstructionPlane)
+        # 在指定的平面建立草圖
+        sketchText4 = textSketch4.sketchTexts
+        # 左上角的文字
+        textInput4 = sketchText4.createInput2(keyCapTextArray[3], 0.2)
+        textInput4.setAsMultiLine(
+            adsk.core.Point3D.create(0, 0, 0),
+            adsk.core.Point3D.create(0.7, -0.7, 0),
+            adsk.core.HorizontalAlignments.RightHorizontalAlignment,
+            adsk.core.VerticalAlignments.BottomVerticalAlignment,
+            0,
+        )
+        extText4 = sketchText4.add(textInput4)
+        # 拉伸文字
+        extTextInput4 = extrudes.createInput(extText4, adsk.fusion.FeatureOperations.CutFeatureOperation)
+        # 設置從 3mm 的 Z 軸偏移開始向下拉伸
+        extTextInput4.startExtent = adsk.fusion.OffsetStartDefinition.create(adsk.core.ValueInput.createByReal(0.2))
+        # 設置拉伸距離 -0.2mm（向下）
+        extTextInput4.setDistanceExtent(False, adsk.core.ValueInput.createByReal(-0.02))
+        extTextInput4.isSolid = True
+        ext = extrudes.add(extTextInput4)
+        
+        
         # 顯示參數的表達式
         ui.messageBox("DONE Git")
 
