@@ -80,6 +80,21 @@ def drawTextSketch(
 
     return texts.add(input)
 
+# def exportTo3MF():
+# 	# 取得目前的設計
+# 	design = adsk.fusion.Design.cast(app.activeProduct)
+	
+# 	# 取得 Export Manager
+# 	exportMgr = design.exportManager
+
+# 	# 設定 3MF 輸出選項
+# 	mfOptions = exportMgr.create3MFExportOptions(design.rootComponent)
+# 	mfOptions.filename = 'C:\Users\yoyoxwolf\Downloads\TWKB-40-keycap\autoKeyCap\Q.3mf'  # 設定輸出檔案路徑
+	
+# 	# 開始 3MF 輸出
+# 	exportMgr.execute(mfOptions)
+# 	ui.messageBox('3MF Exported successfully!')
+
 
 def run(context):
     try:
@@ -243,6 +258,21 @@ def run(context):
         extTextInput4.isSolid = True
         ext = extrudes.add(extTextInput4)
         
+        # # ----------匯出 3MF----------
+        # # exportTo3MF()
+        # # 	# 取得目前的設計
+        # design = adsk.fusion.Design.cast(app.activeProduct)
+
+        # # 取得 Export Manager
+        # exportMgr = design.exportManager
+
+        # # 設定 3MF 輸出選項
+        # mfOptions = exportMgr.create3MFExportOptions(design.rootComponent)
+        # mfOptions.filename = 'C:\Users\yoyoxwolf\Downloads\TWKB-40-keycap\autoKeyCap\Q.3mf'  # 設定輸出檔案路徑
+
+        # # 開始 3MF 輸出
+        # exportMgr.execute(mfOptions)
+        # # ui.messageBox('3MF Exported successfully!')
         
         # 顯示參數的表達式
         ui.messageBox("DONE Git")
