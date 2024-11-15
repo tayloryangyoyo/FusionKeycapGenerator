@@ -1,6 +1,9 @@
-import adsk.core, adsk.fusion, adsk.cam, traceback
+import sys
+import os
+sys.path.append(os.path.dirname(__file__))
 
-# from keyText import keyArray
+import adsk.core, adsk.fusion, adsk.cam, traceback
+from keyArray import keyArrayList
 
 # 取得 Fusion 360 的根應用程式物件
 app = adsk.core.Application.get()
@@ -92,50 +95,8 @@ def drawTextSketch(
 
 def run(context):
     try:
-        keyArray = [
-            ["Q", "F1", "BT01", "C-Esc"],
-            ["W", "F2", "BT02", "C-Esc"],
-            ["E", "F3", "BT03", ""],
-            ["R", "F4", "BT04", ""],
-            ["T", "F5", "BT05", ""],
-            ["Y", "F6", "N7", ""],
-            ["U", "F7", "N8", ""],
-            ["I", "F8", "N9", ""],
-            ["O", "F9", "+", "C-DEL"],
-            ["P", "F10", "*", "C-DEL"],
-            ["A", "1", "", "[TAB"],
-            ["S", "2", "", "TAB]"],
-            ["D", "3", "", ""],
-            ["F", "4", "", ""],
-            ["G", "5", "", ""],
-            ["H", "6", "N4", ""],
-            ["J", "7", "N5", ""],
-            ["K", "8", "N6", ""],
-            ["L", "9", "-", "C-enter"],
-            [";", "0", "/", "C-enter"],
-            ["Z", "", "", ""],
-            ["X", "", "", ""],
-            ["C", "", "", ""],
-            ["V", "", "", ""],
-            ["B", "", "", ""],
-            ["N", "", "N1", ""],
-            ["M", "", "N2", ""],
-            [".", "", "N3", ""],
-            ["↑", "F11", "", ""],
-            ["/", "F12", "=", ""],
-            ["Ctrl", "", "", ""],
-            ["GUI", "", "", ""],
-            ["ALT", "", "", ""],
-            ["SHIFT", "", "", ""],
-            ["SPACE", "", "N layer", ""],
-            ["SPACE", "", "F layer", ""],
-            ["`", ".", "", ""],
-            ["←", "", "", ""],
-            ["↓", "-", "", ""],
-            ["→", "=", "", ""],
-        ]
         # 迴圈
-        for keyIndex in range(len(keyArray)):
+        for keyIndex in range(len(keyArrayList)):
             # 建立新的元件
             component = createNewComponent()
             component.name = "Key" + str(keyIndex)
@@ -144,7 +105,7 @@ def run(context):
             # 取得圓角功能
             filletFeats = component.features.filletFeatures
             # ----------建立矩形並且拉伸----------
-            keyText = keyArray[keyIndex]
+            keyText = keyArrayList[keyIndex]
             # 建立一個新的草圖
             rectSketch = createSketch(component, component.xYConstructionPlane)
             # 繪製一個矩形
