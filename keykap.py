@@ -1,5 +1,6 @@
 import sys
 import os
+
 sys.path.append(os.path.dirname(__file__))
 
 import adsk.core, adsk.fusion, adsk.cam, traceback
@@ -19,9 +20,17 @@ TEXT_TWO_SIZE = 0.3
 TEXT_THREE_SIZE = 0.2
 TEXT_FOUR_SIZE = 0.2
 
-TEXT_DEEP = adsk.core.ValueInput.createByReal(-0.02)
+TEXT_DEEP = -0.02
+KEY_CAP_TOP_HEIGHT = 0.2
+KEY_CAP_TOP_WIDTH = 1.7
+KEY_CAP_TOP_DEPTH = 1.7
+KEY_CAP_BUTTOM_HEIGHT = -0.3
 
-
+R_TEXT_DEEP = adsk.core.ValueInput.createByReal(TEXT_DEEP)
+R_KEY_CAP_TOP_HEIGHT = adsk.core.ValueInput.createByReal(KEY_CAP_TOP_HEIGHT)
+R_KEY_CAP_TOP_WIDTH = adsk.core.ValueInput.createByReal(KEY_CAP_TOP_WIDTH)
+R_KEY_CAP_TOP_DEPTH = adsk.core.ValueInput.createByReal(KEY_CAP_TOP_DEPTH)
+R_KEY_CAP_BUTTOM_HEIGHT = adsk.core.ValueInput.createByReal(KEY_CAP_BUTTOM_HEIGHT)
 
 
 # 定義一個函數來建立新的元件
@@ -116,8 +125,7 @@ def run(context):
                 recProfiles.item(0),
                 adsk.fusion.FeatureOperations.NewBodyFeatureOperation,
             )
-            recHeight = adsk.core.ValueInput.createByReal(0.2)
-            extInput.setDistanceExtent(False, recHeight)
+            extInput.setDistanceExtent(False, R_KEY_CAP_TOP_HEIGHT)
             extInput.isSolid = True
             ext = extrudes.add(extInput)
 
@@ -159,8 +167,8 @@ def run(context):
                 circle_profiles.item(0),
                 adsk.fusion.FeatureOperations.JoinFeatureOperation,
             )
-            circleHeight = adsk.core.ValueInput.createByReal(-0.3)
-            extInput2.setDistanceExtent(False, circleHeight)
+
+            extInput2.setDistanceExtent(False, R_KEY_CAP_BUTTOM_HEIGHT)
             extInput2.isSolid = True
             ext = extrudes.add(extInput2)
 
@@ -187,10 +195,10 @@ def run(context):
             )
             # 設置從 3mm 的 Z 軸偏移開始向下拉伸
             extTextInput.startExtent = adsk.fusion.OffsetStartDefinition.create(
-                adsk.core.ValueInput.createByReal(0.2)
+                R_KEY_CAP_TOP_HEIGHT
             )
             # 設置拉伸距離 -0.2mm（向下）
-            extTextInput.setDistanceExtent(False, TEXT_DEEP)
+            extTextInput.setDistanceExtent(False, R_TEXT_DEEP)
             extTextInput.isSolid = True
             ext = extrudes.add(extTextInput)
 
@@ -215,10 +223,10 @@ def run(context):
                 )
                 # 設置從 3mm 的 Z 軸偏移開始向下拉伸
                 extTextInput2.startExtent = adsk.fusion.OffsetStartDefinition.create(
-                    adsk.core.ValueInput.createByReal(0.2)
+                    R_KEY_CAP_TOP_HEIGHT
                 )
                 # 設置拉伸距離 -0.2mm（向下）
-                extTextInput2.setDistanceExtent(False, TEXT_DEEP)
+                extTextInput2.setDistanceExtent(False, R_TEXT_DEEP)
                 extTextInput2.isSolid = True
                 ext = extrudes.add(extTextInput2)
 
@@ -243,10 +251,10 @@ def run(context):
                 )
                 # 設置從 3mm 的 Z 軸偏移開始向下拉伸
                 extTextInput3.startExtent = adsk.fusion.OffsetStartDefinition.create(
-                    adsk.core.ValueInput.createByReal(0.2)
+                    R_KEY_CAP_TOP_HEIGHT
                 )
                 # 設置拉伸距離 -0.2mm（向下）
-                extTextInput3.setDistanceExtent(False, TEXT_DEEP)
+                extTextInput3.setDistanceExtent(False, R_TEXT_DEEP)
                 extTextInput3.isSolid = True
                 ext = extrudes.add(extTextInput3)
 
@@ -271,10 +279,10 @@ def run(context):
                 )
                 # 設置從 3mm 的 Z 軸偏移開始向下拉伸
                 extTextInput4.startExtent = adsk.fusion.OffsetStartDefinition.create(
-                    adsk.core.ValueInput.createByReal(0.2)
+                    R_KEY_CAP_TOP_HEIGHT
                 )
                 # 設置拉伸距離 -0.2mm（向下）
-                extTextInput4.setDistanceExtent(False, TEXT_DEEP)
+                extTextInput4.setDistanceExtent(False, R_TEXT_DEEP)
                 extTextInput4.isSolid = True
                 ext = extrudes.add(extTextInput4)
 
