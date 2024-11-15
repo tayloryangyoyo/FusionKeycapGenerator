@@ -10,6 +10,16 @@ if app:
 
 newComp = None
 
+# 全域變數
+TEXT_ONE_SIZE = 0.4
+TEXT_TWO_SIZE = 0.3
+TEXT_THREE_SIZE = 0.2
+TEXT_FOUR_SIZE = 0.2
+
+TEXT_DEEP = adsk.core.ValueInput.createByReal(-0.02)
+
+
+
 
 # 定義一個函數來建立新的元件
 def createNewComponent() -> adsk.fusion.Component:
@@ -93,7 +103,6 @@ def run(context):
             ["I", "F8", "N9", ""],
             ["O", "F9", "+", "C-DEL"],
             ["P", "F10", "*", "C-DEL"],
-            
             ["A", "1", "", "[TAB"],
             ["S", "2", "", "TAB]"],
             ["D", "3", "", ""],
@@ -104,7 +113,6 @@ def run(context):
             ["K", "8", "N6", ""],
             ["L", "9", "-", "C-enter"],
             [";", "0", "/", "C-enter"],
-            
             ["Z", "", "", ""],
             ["X", "", "", ""],
             ["C", "", "", ""],
@@ -115,7 +123,6 @@ def run(context):
             [".", "", "N3", ""],
             ["↑", "F11", "", ""],
             ["/", "F12", "=", ""],
-            
             ["Ctrl", "", "", ""],
             ["GUI", "", "", ""],
             ["ALT", "", "", ""],
@@ -131,6 +138,7 @@ def run(context):
         for keyIndex in range(len(keyArray)):
             # 建立新的元件
             component = createNewComponent()
+            component.name = "Key" + str(keyIndex)
             # 取得拉伸功能
             extrudes: adsk.fusion.ExtrudeFeatures = component.features.extrudeFeatures
             # 取得圓角功能
@@ -221,9 +229,7 @@ def run(context):
                 adsk.core.ValueInput.createByReal(0.2)
             )
             # 設置拉伸距離 -0.2mm（向下）
-            extTextInput.setDistanceExtent(
-                False, adsk.core.ValueInput.createByReal(-0.02)
-            )
+            extTextInput.setDistanceExtent(False, TEXT_DEEP)
             extTextInput.isSolid = True
             ext = extrudes.add(extTextInput)
 
@@ -251,9 +257,7 @@ def run(context):
                     adsk.core.ValueInput.createByReal(0.2)
                 )
                 # 設置拉伸距離 -0.2mm（向下）
-                extTextInput2.setDistanceExtent(
-                    False, adsk.core.ValueInput.createByReal(-0.02)
-                )
+                extTextInput2.setDistanceExtent(False, TEXT_DEEP)
                 extTextInput2.isSolid = True
                 ext = extrudes.add(extTextInput2)
 
@@ -281,9 +285,7 @@ def run(context):
                     adsk.core.ValueInput.createByReal(0.2)
                 )
                 # 設置拉伸距離 -0.2mm（向下）
-                extTextInput3.setDistanceExtent(
-                    False, adsk.core.ValueInput.createByReal(-0.02)
-                )
+                extTextInput3.setDistanceExtent(False, TEXT_DEEP)
                 extTextInput3.isSolid = True
                 ext = extrudes.add(extTextInput3)
 
@@ -311,9 +313,7 @@ def run(context):
                     adsk.core.ValueInput.createByReal(0.2)
                 )
                 # 設置拉伸距離 -0.2mm（向下）
-                extTextInput4.setDistanceExtent(
-                    False, adsk.core.ValueInput.createByReal(-0.02)
-                )
+                extTextInput4.setDistanceExtent(False, TEXT_DEEP)
                 extTextInput4.isSolid = True
                 ext = extrudes.add(extTextInput4)
 
